@@ -12,5 +12,7 @@ namespace PatientAPI.Model
         {
 
         }
+
+        public DbSet<PatientDetails> PatientDetails { get; set; }
     }
 }

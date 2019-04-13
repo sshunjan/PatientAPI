@@ -9,6 +9,7 @@ namespace PatientAPI.Model
 {
     public class PatientDetails
     {
+        // Primary Key
         [Key]
         public int Id { get; set; }
         [Required]
@@ -16,7 +17,7 @@ namespace PatientAPI.Model
         [Required]
         public string LirstName { get; set; }
         [Required]
-        [Column(TypeName = "varchar(8)")]
-        public string BirthDate { get; set; } // MM/DD/YY
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; } // MM/DD/YY
     }
 }
