@@ -17,7 +17,6 @@ namespace PatientAPI.Model
         [Required]
         public string LastName { get; set; }
         [Required]
-        [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; } // MM/DD/YY
+        public string BirthDate { get; set; } // YYYY/MM/DD
     }
 }

@@ -37,7 +37,16 @@ namespace PatientAPI
                         }
                     });
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin()
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod();
+                      });
+            });
 
             services.AddDbContext<PatientDetailsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
         }
@@ -49,17 +58,9 @@ namespace PatientAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseCors(options => options.WithOrigins("https://localhost:4200")
-                                   .AllowAnyMethod()
-                                   .AllowAnyHeader());
+            app.UseCors("AllowAllHeaders");
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
