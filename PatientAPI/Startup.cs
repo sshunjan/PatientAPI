@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,7 @@ namespace PatientAPI
                         }
                     });
 
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllHeaders",
@@ -48,6 +51,12 @@ namespace PatientAPI
                       });
             });
 
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 5001;
+            });
+
             //services.AddDbContext<PatientDetailsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
             services.AddDbContext<PatientDetailsContext>(options => options.UseInMemoryDatabase("PatientDetailsDB"));
         }
@@ -55,17 +64,23 @@ namespace PatientAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
             app.UseCors("AllowAllHeaders");
-
+            app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseMvc();
+
+
         }
     }
 }

@@ -12,6 +12,7 @@ namespace PatientAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RequireHttps]
     public class PatientDetailsController : ControllerBase
     {
         private readonly PatientDetailsContext _context;
