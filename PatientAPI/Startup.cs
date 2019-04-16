@@ -48,7 +48,8 @@ namespace PatientAPI
                       });
             });
 
-            services.AddDbContext<PatientDetailsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
+            //services.AddDbContext<PatientDetailsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
+            services.AddDbContext<PatientDetailsContext>(options => options.UseInMemoryDatabase("PatientDetailsDB"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +59,9 @@ namespace PatientAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseCors("AllowAllHeaders");
 
